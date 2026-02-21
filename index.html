@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Das GEHEIMNIS von Melodia – Eine musikalische Reise durch die Zeit</title>
   <meta name="description" content="Modernes Familienmusical über Musik als Portal durch Zeiten und Welten. Projekt in Entwicklung – Mitwirkende, Partner und Produzenten gesucht (Ziel: 2028)." />
-
   <style>
     :root{
       --bg:#ffffff;
       --text:#111113;
       --muted:#5a5a66;
+      --card:#ffffff;
       --border:rgba(0,0,0,.10);
       --shadow: 0 10px 30px rgba(0,0,0,.06);
       --radius: 18px;
@@ -18,239 +18,616 @@
     }
     html{scroll-behavior:smooth}
     body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
+      background: var(--bg); color: var(--text);
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:0 18px;}
-
-    /* Top */
     .topbar{
       position:sticky; top:0; z-index:20;
       backdrop-filter: blur(10px);
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.86);
       border-bottom:1px solid var(--border);
     }
-    .row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0;}
-    .logo{font-weight:800; letter-spacing:-.02em; text-decoration:none;}
-    .melodia{
+    .topbar .row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0;}
+    .logo{
+      font-weight:750; letter-spacing:-.02em; text-decoration:none;
+      display:inline-flex; align-items:baseline; gap:.35rem;
+    }
+    .logo .melodia{
       background: linear-gradient(90deg,#ff3b30,#ffcc00,#34c759,#00c7ff,#0a84ff,#bf5af2);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .nav{display:none; gap:18px; font-size:14px; color:var(--muted);}
+    .nav a{ text-decoration:none; padding:8px 10px; border-radius:999px;}
+    .nav a:hover{ background: rgba(0,0,0,.04); color:var(--text);}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      border-radius:999px; padding:10px 14px; font-weight:650; font-size:14px;
+      border:1px solid var(--border); background:#fff; text-decoration:none;
+    }
+    .btn.primary{ background:#111113; color:#fff; border-color:#111113;}
+    .btn:hover{ transform: translateY(-1px); transition: transform .15s ease;}
+    .rainbowline{
+      height:3px; border-radius:999px;
+      background: linear-gradient(90deg,#ff3b30,#ffcc00,#34c759,#00c7ff,#0a84ff,#bf5af2);
+      opacity:.8; margin-bottom:12px;
     }
 
     /* Hero */
-    .hero{padding:70px 0 50px;}
-    h1{font-size:clamp(34px,5vw,56px); margin:0 0 10px;}
-    .subtitle{color:var(--muted); margin:0 0 16px;}
-    .lead{max-width:780px; color:var(--muted); line-height:1.75;}
-
-    .btn{
-      display:inline-flex;
-      padding:10px 16px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      text-decoration:none;
-      font-weight:600;
-      font-size:14px;
-      margin-right:10px;
+    .hero{
+      position:relative; overflow:hidden;
+      padding:72px 0 52px;
     }
-    .btn.primary{background:#111113; color:#fff; border-color:#111113;}
+    .glow{ position:absolute; inset:0; pointer-events:none; }
+    .glow:before{
+      content:""; position:absolute; left:50%; top:-110px; transform:translateX(-50%);
+      width:560px; height:560px; border-radius:50%;
+      background: linear-gradient(90deg, rgba(255,59,48,.12), rgba(52,199,89,.12), rgba(191,90,242,.12));
+      filter: blur(40px);
+    }
+    .glow:after{
+      content:""; position:absolute; right:-120px; bottom:-160px;
+      width:560px; height:560px; border-radius:50%;
+      background: linear-gradient(90deg, rgba(0,199,255,.12), rgba(10,132,255,.12), rgba(191,90,242,.12));
+      filter: blur(44px);
+    }
+    .stage{
+      position:absolute; left:0; right:0; bottom:0; height:180px;
+      background: linear-gradient(to top, rgba(17,17,19,.06), transparent);
+      pointer-events:none;
+    }
 
-    section{padding:60px 0;}
-    h2{font-size:26px; margin:0 0 14px;}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.75);
+      padding:8px 12px; border-radius:999px;
+      font-size:12px; color:var(--muted);
+    }
+    h1{ margin:18px 0 10px; font-size: clamp(34px, 5vw, 56px); letter-spacing:-.03em; line-height:1.05;}
+    .subtitle{ font-size: clamp(16px, 2vw, 20px); color:var(--muted); margin: 0 0 18px;}
+    .lead{ max-width: 820px; font-size: 16px; color: var(--muted); line-height: 1.75;}
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; align-items:center;}
+    .email{font-size:12px; color:var(--muted);}
+    .email a{ text-decoration: underline; text-decoration-color: rgba(0,0,0,.25); }
 
+    /* Sections */
+    section{padding:56px 0;}
+    .grid{display:grid; gap:18px;}
+    .two{ grid-template-columns: 1fr; }
     .card{
+      background: var(--card);
       border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
     }
+    h2{ margin:0 0 10px; font-size: 26px; letter-spacing:-.02em;}
+    .p{ color: var(--muted); line-height: 1.75; margin: 0; }
+    .kpi{display:grid; gap:10px; margin-top:14px; font-size:14px; color:var(--muted);}
+    .kpi div{display:flex; justify-content:space-between; gap:14px;}
+    .kpi b{color:var(--text); font-weight:650;}
 
-    .p{color:var(--muted); line-height:1.75;}
+    .tiles{display:grid; gap:14px; grid-template-columns: 1fr;}
+    .tiles2{display:grid; gap:14px; grid-template-columns: 1fr;}
+    .tile{
+      border:1px solid var(--border); border-radius: var(--radius);
+      padding:16px; background: #fafafa;
+    }
+    .tile b{display:block; margin-bottom:6px;}
+    .tile p{margin:0; color:var(--muted); line-height:1.65; font-size:14px;}
 
-    /* Figuren Grid */
-    .figureGrid{
+    /* Figuren Gallery (Media) */
+    .mediaGrid{
       display:grid;
-      gap:20px;
-      grid-template-columns:1fr;
+      gap:14px;
+      grid-template-columns: 1fr;
     }
-    @media(min-width:860px){
-      .figureGrid{grid-template-columns:repeat(3,1fr);}
-    }
-
-    .figureCard{
+    .mediaItem{
       border:1px solid var(--border);
-      border-radius:var(--radius);
+      border-radius: var(--radius);
       overflow:hidden;
-      box-shadow:var(--shadow);
       background:#fff;
-      text-align:center;
+      box-shadow: var(--shadow);
     }
-
-    .figureCard img{
+    .mediaThumb{
+      display:block;
       width:100%;
-      height:260px;
+      height:240px;
       object-fit:cover;
-      display:block;
+      object-position: center top;
+    }
+    .mediaBody{ padding:14px 14px 16px; }
+    .mediaTitle{ font-weight:750; margin:0 0 6px; }
+    .mediaText{ margin:0; color: var(--muted); line-height:1.6; font-size:14px; }
+    .badges{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .badge{
+      font-size:12px;
+      color: var(--muted);
+      border:1px solid var(--border);
+      background:#fafafa;
+      padding:6px 10px;
+      border-radius:999px;
     }
 
-    .figureBody{
-      padding:16px;
+    /* Lightbox (dialog) */
+    .lightbox{
+      width:min(960px, 94vw);
+      border:1px solid var(--border);
+      border-radius: calc(var(--radius) + 8px);
+      padding:0;
+      box-shadow: 0 30px 80px rgba(0,0,0,.22);
     }
-
-    .figureBody b{
-      display:block;
-      margin-bottom:6px;
-      font-size:16px;
+    .lightbox::backdrop{ background: rgba(0,0,0,.55); }
+    .lightboxHead{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; padding:12px 14px;
+      border-bottom:1px solid var(--border);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
     }
-
-    .figureBody p{
-      margin:0;
-      font-size:14px;
-      color:var(--muted);
-      line-height:1.6;
+    .lightboxHead b{ font-size:14px; }
+    .lightboxClose{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 12px;
+      font-weight:650;
+      cursor:pointer;
     }
+    .lightboxImg{ width:100%; height:auto; display:block; }
+    .lightboxCap{ padding:12px 14px 16px; color: var(--muted); line-height:1.6; font-size:14px; }
 
+    .dark{
+      background:#111113; color:#fff;
+      border-radius: calc(var(--radius) + 8px);
+      padding: 26px;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .dark .p{color: rgba(255,255,255,.78);}
+    .dark a{color:#fff;}
     .footer{
       border-top:1px solid var(--border);
-      padding:30px 0;
-      color:var(--muted);
-      font-size:14px;
+      padding:26px 0 40px;
+      color:var(--muted); font-size:14px;
+    }
+    .footer .row{display:flex; flex-direction:column; gap:10px;}
+    .footer a{ text-decoration: underline; text-decoration-color: rgba(0,0,0,.25); }
+
+    /* Simple scroll reveal */
+    .reveal{opacity:0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease;}
+    .reveal.show{opacity:1; transform:none;}
+
+    @media (min-width: 860px){
+      .nav{display:flex}
+      .two{ grid-template-columns: 1.35fr .65fr; align-items:start;}
+      .tiles{ grid-template-columns: repeat(3, 1fr); }
+      .tiles2{ grid-template-columns: 1fr 1fr; }
+      .mediaGrid{ grid-template-columns: 1fr 1fr 1fr; }
     }
   </style>
 </head>
-
 <body>
-
-<header class="topbar">
-  <div class="wrap">
-    <div class="row">
-      <a class="logo" href="#top">
-        Das GEHEIMNIS von <span class="melodia">Melodia</span>
-      </a>
-      <a class="btn" href="#kontakt">Kontakt</a>
-    </div>
-  </div>
-</header>
-
-<main id="top">
-
-  <section class="hero">
+  <header class="topbar">
     <div class="wrap">
-      <h1>Das GEHEIMNIS von <span class="melodia">Melodia</span></h1>
-      <p class="subtitle">Eine musikalische Reise durch die Zeit</p>
+      <div class="row">
+        <a class="logo" href="#top">
+          <span>Das GEHEIMNIS von</span>
+          <span class="melodia">Melodia</span>
+        </a>
 
-      <p class="lead">
-        Ein modernes Familienmusical über Musik als verbindende Kraft zwischen Zeiten, Generationen und Welten.
-        Drei Kinder geraten in eine Zwischenwelt, in der Klänge zu Portalen werden.
-        Jede Epoche besitzt ihren eigenen Rhythmus – doch ein Leitmotiv verbindet alles.
-        Ziel: Realisation bis 2028.
-      </p>
+        <nav class="nav" aria-label="Navigation">
+          <a href="#projekt">Projekt</a>
+          <a href="#figuren-musik">Figuren & Musik</a>
+          <a href="#mitmachen">Mitmachen</a>
+          <a href="#partner">Partner</a>
+          <a href="#media">Media</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
 
-      <div style="margin-top:18px;">
-        <a class="btn primary" href="#kontakt">Mitwirken</a>
-        <a class="btn" href="#figuren">Figuren entdecken</a>
+        <a class="btn" href="#kontakt">Kontakt</a>
       </div>
+      <div class="rainbowline"></div>
     </div>
-  </section>
+  </header>
 
-  <!-- FIGUREN / MEDIA -->
-  <section id="figuren">
-    <div class="wrap">
-      <h2>Die Figuren</h2>
-      <p class="p">
-        Jede Figur trägt ihren eigenen Klang. Zusammen ergeben sie Melodia.
-      </p>
+  <main id="top">
+    <div class="hero">
+      <div class="glow"></div>
+      <div class="stage"></div>
 
-      <div style="height:20px;"></div>
+      <div class="wrap">
+        <div class="pill">Entwicklungsphase · Mitwirkung & Partnerschaften gesucht · Ziel 2028</div>
 
-      <div class="figureGrid">
+        <h1>Das GEHEIMNIS von <span class="melodia">Melodia</span></h1>
+        <p class="subtitle">Eine musikalische Reise durch die Zeit</p>
 
-        <div class="figureCard">
-          <img src="assets/media/figur_alex.png" alt="Figur Alex">
-          <div class="figureBody">
-            <b>Alex</b>
-            <p>Übernimmt Verantwortung – auch wenn niemand weiß, wie man Zeit eigentlich steuert.</p>
-          </div>
-        </div>
-
-        <div class="figureCard">
-          <img src="assets/media/figur_ben.png" alt="Figur Ben">
-          <div class="figureBody">
-            <b>Ben</b>
-            <p>Humor als Rettungsring. Denkt schneller, als er spricht – meistens.</p>
-          </div>
-        </div>
-
-        <div class="figureCard">
-          <img src="assets/media/figur_mira.png" alt="Figur Mira">
-          <div class="figureBody">
-            <b>Mira</b>
-            <p>Der emotionale Kern. Nicht das Opfer – sondern der Schlüssel.</p>
-          </div>
-        </div>
-
-        <div class="figureCard">
-          <img src="assets/media/figur_alexandra.png" alt="Figur Alexandra">
-          <div class="figureBody">
-            <b>Alexandra</b>
-            <p>Zwischen Eleganz und Entschlossenheit – Musik ist ihre Sprache.</p>
-          </div>
-        </div>
-
-        <div class="figureCard">
-          <img src="assets/media/figur_twickle.png" alt="Figur Twickle">
-          <div class="figureBody">
-            <b>Twickle</b>
-            <p>Zwischenwesen. Beobachter. Hüter der Zwischenwelt Melodia.</p>
-          </div>
-        </div>
-
-        <div class="figureCard">
-          <img src="assets/media/figur_caden.png" alt="Figur Caden">
-          <div class="figureBody">
-            <b>Caden</b>
-            <p>Rätselhaft, ruhig, wissend. Vielleicht weiß er mehr als alle anderen.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section id="kontakt">
-    <div class="wrap">
-      <div class="card">
-        <h2>Kontakt</h2>
-        <p class="p">
-          Für Mitwirkung, Partnerschaft oder Produzenten-Anfragen:
+        <p class="lead">
+          „Das GEHEIMNIS von Melodia“ ist ein modernes Familienmusical über Musik als verbindende Kraft zwischen Zeiten, Generationen und Welten.
+          Drei Kinder geraten in eine geheimnisvolle Zwischenwelt, in der Klänge zu Portalen werden und jede Epoche ihren eigenen Rhythmus besitzt.
+          Das Projekt befindet sich in strukturierter Entwicklung und sucht Mitwirkende sowie strategische Partner und Produzenten für eine Realisation bis 2028.
         </p>
-        <div style="margin-top:16px;">
-          <a class="btn primary" href="mailto:musical@ntl-music.de">
-            musical@ntl-music.de
-          </a>
+
+        <div class="actions">
+          <a class="btn primary" href="#kontakt">Kontakt</a>
+          <a class="btn" href="#projekt">Mehr erfahren</a>
+          <span class="email">E-Mail: <a href="mailto:musical@ntl-music.de">musical@ntl-music.de</a></span>
         </div>
       </div>
     </div>
-  </section>
 
-  <footer class="footer">
-    <div class="wrap">
-      © <span id="year"></span> Das GEHEIMNIS von Melodia · 
-      <a href="impressum.html">Impressum</a> · 
-      <a href="datenschutz.html">Datenschutz</a>
+    <section id="projekt">
+      <div class="wrap grid two reveal">
+        <div>
+          <h2>Projekt in einem Satz</h2>
+          <p class="p">Musik wird zum Portal. Eine Reise durch Zeiten, Klangwelten und Entscheidungen – als Familienmusical mit Humor, Emotion und Mitmachmomenten.</p>
+
+          <div style="height:14px"></div>
+          <h3 style="margin:0 0 8px; font-size:16px;">Kurzbeschreibung</h3>
+          <p class="p">
+            Im Zentrum steht eine musikalische Reise durch unterschiedliche Epochen, von archaischen Rhythmen bis zu orchestralen Klangräumen.
+            Jede Station besitzt ihre eigene Klangsprache, Farbwelt und dramaturgische Dynamik.
+            Ein wiederkehrendes Leitmotiv verbindet die Welten und entwickelt sich gemeinsam mit den Figuren weiter.
+            Das Publikum wird aktiv eingebunden und wird Teil der musikalischen Lösung.
+          </p>
+
+          <div class="tile" style="margin-top:18px;">
+            <b>Künstlerische Vision</b>
+            <p>
+              Melodia ist mehr als ein Ort: eine Zwischenwelt aus Licht, Projektion und Chorflächen.
+              Ein diffuser, farblich verlaufender Chor bildet die klangliche Atmosphäre dieser Welt,
+              während Bühne und digitale Projektion zu einem Gesamtraum verschmelzen, der Musik sichtbar macht.
+            </p>
+          </div>
+
+          <div style="margin-top:18px" class="tile">
+            <b>Projektstatus & Roadmap</b>
+            <p>
+              Phase 1: Konzeptentwicklung, Figurenstruktur, musikalische Leitmotive (laufend).<br>
+              Phase 2: Orchestrierung & dramaturgische Feinarbeit.<br>
+              Phase 3: Produktionspartnerschaft & Förderstruktur.<br>
+              Phase 4: Realisation und Bühnenumsetzung (Zielhorizont 2028).
+            </p>
+          </div>
+        </div>
+
+        <aside class="card">
+          <h3 style="margin:0 0 10px; font-size:14px; color:var(--text);">Eckdaten (aktuell)</h3>
+          <div class="kpi">
+            <div><span>Format</span><b>One-Pager (DE)</b></div>
+            <div><span>Zeithorizont</span><b>bis 2028</b></div>
+            <div><span>Ziele</span><b>Interesse · Mitwirkende · Partner</b></div>
+            <div><span>Kontakt</span><b>musical@ntl-music.de</b></div>
+          </div>
+          <div style="margin-top:16px" class="rainbowline"></div>
+          <p class="p" style="font-size:12px">Regenbogen als Akzent, clean und professionell.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="story">
+      <div class="wrap reveal">
+        <div class="card">
+          <h2>Story-Teaser (ohne Spoiler)</h2>
+          <p class="p">
+            Drei Kinder, ein rätselhaftes musikalisches Signal und eine Zwischenwelt, in der Klang sichtbar wird.
+            Jede Epoche hat Regeln, Rhythmen und Hinweise. Wer zuhört, findet den Weg. Wer mitmacht, öffnet Portale.
+            Und je weiter die Reise geht, desto klarer wird: Es geht nicht nur um Zeit – sondern um jemanden, den man nicht verlieren will.
+          </p>
+
+          <div style="height:16px"></div>
+          <div class="tiles">
+            <div class="tile">
+              <b>Musik-Epochen</b>
+              <p>Verschiedene Stilwelten als Stationen – jede mit eigener Klangsprache und Energie.</p>
+            </div>
+            <div class="tile">
+              <b>Publikum als Teil</b>
+              <p>Interaktive Momente: Das Publikum hilft, Übergänge zu aktivieren – ohne peinliche „Mitmachshow“.</p>
+            </div>
+            <div class="tile">
+              <b>Melodia-Chor</b>
+              <p>Wortlose Klangflächen als Atmosphäre: Melodia klingt, bevor sie sichtbar wird.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="figuren-musik">
+      <div class="wrap reveal">
+        <div class="card">
+          <h2>Figuren & Musik (kurz und spoilerfrei)</h2>
+          <p class="p">
+            Im Kern steht eine Familie aus Freundschaft, Mut und dem Versuch, in einem Chaos den richtigen Ton zu finden.
+            Musik ist hier nicht Dekoration, sondern Handlung: Sie öffnet Wege, verändert Räume und verbindet Epochen.
+          </p>
+
+          <div style="height:16px"></div>
+
+          <div class="tiles2">
+            <div class="tile">
+              <b>Alex</b>
+              <p>Übernimmt Verantwortung, auch wenn niemand ihm erklärt hat, wie man „Zeitreise“ eigentlich bedient. Direkt, bodenständig, manchmal zu schnell im Kopf.</p>
+            </div>
+            <div class="tile">
+              <b>Ben</b>
+              <p>Humor als Rettungsring. Er nimmt dem Abenteuer die Schwere, ohne es lächerlich zu machen – und hat erstaunlich oft recht.</p>
+            </div>
+            <div class="tile">
+              <b>Mira</b>
+              <p>Der emotionale Kern. Ihr Verschwinden setzt alles in Bewegung. Sie ist nicht „das Opfer“, sondern der Schlüssel zur Musiklogik der Reise.</p>
+            </div>
+            <div class="tile">
+              <b>Melodia</b>
+              <p>Eine Zwischenwelt aus Projektion, Licht und Chorflächen. Melodia reagiert auf Musik wie ein lebender Organismus.</p>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="tile">
+            <b>Musikalisches Prinzip</b>
+            <p>
+              Jede Epoche hat eine eigene Klangsprache. Ein Leitmotiv wandert durch die Stile, verändert Harmonien, Rhythmus und Instrumentierung,
+              bleibt aber erkennbar. So spürt das Publikum: Es ist immer noch „Melodia“ – nur in anderer Zeit.
+            </p>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="tile">
+            <b>Produzenten-Kurzpitch</b>
+            <p>
+              Skalierbares Familienmusical mit klarer Dramaturgie, starker visueller Identität (Bühne + Projektion),
+              musikalischen Epochen als Publikumsmagnet und interaktiven Momenten als Alleinstellungsmerkmal.
+              Gesucht werden Partner für die nächste Entwicklungsstufe (Orchestrierung, Produktionsstruktur, Förder- und Realisationsplanung) bis zur Umsetzung 2028.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="highlights">
+      <div class="wrap reveal">
+        <h2>Highlights</h2>
+        <p class="p">Modern erzählt, familienfreundlich, mit klarer Sprache – und einem Bühnenkonzept, das Projektion und Spiel zu einer Welt verbindet.</p>
+        <div style="height:14px"></div>
+
+        <div class="tiles">
+          <div class="tile">
+            <b>Publikumsbeteiligung</b>
+            <p>Mitmach-Momente als dramaturgischer Motor – organisch eingebettet, nicht aufgesetzt.</p>
+          </div>
+          <div class="tile">
+            <b>Melodia-Chor</b>
+            <p>Atmosphärische Klangflächen als „lebende Kulisse“ der Zwischenwelt.</p>
+          </div>
+          <div class="tile">
+            <b>Musik-Epochen</b>
+            <p>Zeitreisen durch Stilwelten, verbunden durch Leitmotive und wiederkehrende Klangsignaturen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mitmachen">
+      <div class="wrap reveal">
+        <div class="card" style="background:#fafafa;">
+          <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; justify-content:space-between;">
+            <div style="max-width:760px;">
+              <h2>Mitmachen</h2>
+              <p class="p">
+                Gesucht werden Mitgestalter, die Verantwortung übernehmen möchten: in der Produktionsorganisation, in der Orchestrierung
+                oder in der strukturellen Weiterentwicklung des Projekts. Angesprochen sind Persönlichkeiten mit künstlerischem Anspruch,
+                Zuverlässigkeit und Lust auf ein langfristiges Kulturprojekt.
+              </p>
+            </div>
+            <a class="btn primary" href="#kontakt">Interesse melden</a>
+          </div>
+
+          <div style="height:16px"></div>
+          <div class="tiles" style="grid-template-columns: 1fr; gap:14px;">
+            <div class="tile" style="background:#fff;">
+              <b>Produktion / Organisation</b>
+              <p>Projektkoordination, Termin- und Aufgabenstruktur, Kommunikation mit Mitwirkenden/Partnern, Meilensteine & Roadmap bis 2028.</p>
+            </div>
+            <div class="tile" style="background:#fff;">
+              <b>Orchestrator</b>
+              <p>Orchestrierung/Arrangement je nach Stil-Epoche, Leitmotive konsistent weiterentwickeln, Schnittstelle Komposition ↔ Ensemble.</p>
+            </div>
+          </div>
+
+          <p class="p" style="margin-top:14px; font-size:13px;">
+            Hinweis: Weitere Rollen (Cast/Chor/Technik) können später ergänzt werden. Aktuell liegt der Fokus auf Aufbau & musikalischer Ausarbeitung.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="partner">
+      <div class="wrap reveal">
+        <div class="card">
+          <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; justify-content:space-between;">
+            <div style="max-width:760px;">
+              <h2>Partner & Sponsoren</h2>
+              <p class="p">
+                „Das GEHEIMNIS von Melodia“ versteht sich als langfristiges Kulturprojekt im Bereich Familienmusical.
+                Für die nächste Entwicklungsphase werden Partner gesucht, die künstlerische Innovation, kulturelle Bildung
+                und nachhaltige Projektentwicklung unterstützen möchten – insbesondere mit Blick auf Realisation und Co-Produktion.
+              </p>
+            </div>
+            <a class="btn" href="mailto:musical@ntl-music.de?subject=Interesse%20an%20Partnerschaft%20/%20Sponsoring%20-%20Melodia">Interesse bekunden</a>
+          </div>
+
+          <div style="height:16px"></div>
+          <div class="tiles">
+            <div class="tile"><b>Sichtbarkeit</b><p>Nennung auf Website und Materialien (später ausbaubar).</p></div>
+            <div class="tile"><b>Kultur-Nähe</b><p>Geeignet für Fördergespräche und Netzwerkpartner – je nach Setup.</p></div>
+            <div class="tile"><b>Langfristigkeit</b><p>Roadmap bis 2028: Entwicklungsphase strukturiert und planbar.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="media">
+      <div class="wrap reveal">
+        <h2>Media – Figuren</h2>
+        <p class="p">Aktuelle Referenzdesigns der Figuren. Klick auf eine Karte öffnet die Ansicht größer.</p>
+        <div style="height:14px"></div>
+
+        <div class="mediaGrid">
+          <article class="mediaItem">
+            <a href="assets/media/figur_alex.png" class="js-media-open" data-title="Alex" data-caption="Alex – bodenständig, direkt, übernimmt Verantwortung." style="text-decoration:none;">
+              <img class="mediaThumb" src="assets/media/figur_alex.png" alt="Alex">
+            </a>
+            <div class="mediaBody">
+              <p class="mediaTitle">Alex</p>
+              <p class="mediaText">Verantwortung, Mut, Tempo.</p>
+              <div class="badges"><span class="badge">Hauptfigur</span></div>
+            </div>
+          </article>
+
+          <article class="mediaItem">
+            <a href="assets/media/figur_ben.png" class="js-media-open" data-title="Ben" data-caption="Ben – Humor als Rettungsring, schneller Kopf." style="text-decoration:none;">
+              <img class="mediaThumb" src="assets/media/figur_ben.png" alt="Ben">
+            </a>
+            <div class="mediaBody">
+              <p class="mediaTitle">Ben</p>
+              <p class="mediaText">Humor, Improvisation, Herz.</p>
+              <div class="badges"><span class="badge">Hauptfigur</span></div>
+            </div>
+          </article>
+
+          <article class="mediaItem">
+            <a href="assets/media/figur_mira.png" class="js-media-open" data-title="Mira" data-caption="Mira – emotionaler Kern, Schlüssel zur Musiklogik." style="text-decoration:none;">
+              <img class="mediaThumb" src="assets/media/figur_mira.png" alt="Mira">
+            </a>
+            <div class="mediaBody">
+              <p class="mediaTitle">Mira</p>
+              <p class="mediaText">Schlüssel, Mut, Gefühl.</p>
+              <div class="badges"><span class="badge">Hauptfigur</span></div>
+            </div>
+          </article>
+
+          <article class="mediaItem">
+            <a href="assets/media/figur_alexandra.png" class="js-media-open" data-title="Alexandra" data-caption="Alexandra – Musik ist ihre Sprache, Eleganz & Entschlossenheit." style="text-decoration:none;">
+              <img class="mediaThumb" src="assets/media/figur_alexandra.png" alt="Alexandra">
+            </a>
+            <div class="mediaBody">
+              <p class="mediaTitle">Alexandra</p>
+              <p class="mediaText">Renaissance, Klang, Präzision.</p>
+              <div class="badges"><span class="badge">Epoche</span></div>
+            </div>
+          </article>
+
+          <article class="mediaItem">
+            <a href="assets/media/figur_twickle.png" class="js-media-open" data-title="Twickle" data-caption="Twickle – Zwischenwesen Melodias, beobachtet und lenkt." style="text-decoration:none;">
+              <img class="mediaThumb" src="assets/media/figur_twickle.png" alt="Twickle">
+            </a>
+            <div class="mediaBody">
+              <p class="mediaTitle">Twickle</p>
+              <p class="mediaText">Zwischenwelt, Hinweise, Magie.</p>
+              <div class="badges"><span class="badge">Melodia</span></div>
+            </div>
+          </article>
+
+          <article class="mediaItem">
+            <a href="assets/media/figur_caden.png" class="js-media-open" data-title="Caden" data-caption="Caden – rätselhaft, ruhig, wissend. Bindeglied." style="text-decoration:none;">
+              <img class="mediaThumb" src="assets/media/figur_caden.png" alt="Caden">
+            </a>
+            <div class="mediaBody">
+              <p class="mediaTitle">Caden</p>
+              <p class="mediaText">Rätsel, Struktur, Bindung.</p>
+              <div class="badges"><span class="badge">Begleiter</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt">
+      <div class="wrap reveal">
+        <div class="dark">
+          <h2 style="margin:0 0 10px;">Kontakt</h2>
+          <p class="p">
+            Für Mitwirkung (Produktion/Organisation, Orchestrierung) oder Partnerschaften:
+            Schreib kurz, wer du bist und was du beitragen möchtest. Ein paar Zeilen reichen.
+          </p>
+
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; align-items:center;">
+            <a class="btn" style="background:#fff; color:#111113; border-color:#fff;" href="mailto:musical@ntl-music.de?subject=Kontakt%20-%20Das%20GEHEIMNIS%20von%20Melodia">
+              musical@ntl-music.de
+            </a>
+            <a class="btn" style="border-color: rgba(255,255,255,.22); background: transparent; color:#fff;" href="#projekt">
+              Zur Projektinfo
+            </a>
+            <span style="font-size:12px; color: rgba(255,255,255,.72);">Socials: <b>Platzhalter</b> (später ergänzen)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="wrap">
+        <div class="row">
+          <div>© <span id="y"></span> Das GEHEIMNIS von Melodia</div>
+          <div>
+            <a href="impressum.html">Impressum</a> ·
+            <a href="datenschutz.html">Datenschutz</a>
+          </div>
+        </div>
+        <div style="margin-top:16px" class="rainbowline"></div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Lightbox dialog -->
+  <dialog id="lightbox" class="lightbox">
+    <div class="lightboxHead">
+      <b id="lightboxTitle">Media</b>
+      <button class="lightboxClose" id="lightboxClose" type="button">Schließen</button>
     </div>
-  </footer>
+    <img id="lightboxImg" class="lightboxImg" alt="">
+    <div id="lightboxCap" class="lightboxCap"></div>
+  </dialog>
 
-</main>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+    // Simple reveal on scroll
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) e.target.classList.add("show");
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
 
+    // Media lightbox
+    const dlg = document.getElementById("lightbox");
+    const dlgImg = document.getElementById("lightboxImg");
+    const dlgTitle = document.getElementById("lightboxTitle");
+    const dlgCap = document.getElementById("lightboxCap");
+    const dlgClose = document.getElementById("lightboxClose");
+
+    document.querySelectorAll(".js-media-open").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = a.getAttribute("href");
+        dlgImg.src = href;
+        dlgImg.alt = a.querySelector("img")?.alt || "Media";
+        dlgTitle.textContent = a.dataset.title || "Media";
+        dlgCap.textContent = a.dataset.caption || "";
+        dlg.showModal();
+      });
+    });
+
+    dlgClose.addEventListener("click", () => dlg.close());
+    dlg.addEventListener("click", (e) => {
+      const rect = dlg.getBoundingClientRect();
+      const inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY <= rect.bottom && e.clientY >= rect.top;
+      if (!inside) dlg.close();
+    });
+  </script>
 </body>
 </html>
